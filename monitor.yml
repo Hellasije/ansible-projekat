@@ -1,0 +1,28 @@
+---
+- name: Instalacija alata i provjera temperature
+  hosts: optiplex_proxmox
+  become: yes  # Ovo kaže Ansible-u da postane root (sudo)
+  vars_files:
+    - tajne.yml
+  vars:
+    ansible_password: "{{ admin_proxmox }}"
+    ansible_sudo_pass: "{{ admin_proxmox }}" # Koristi istu lozinku za sudo
+
+  tasks:
+    - name: Instaliraj htop i lm-sensors
+      # Na Proxmoxu (Debian bazi) koristi se apt
+      apt:
+        name: 
+          - htop
+          - lm-sensors
+        state: present
+        update_cache: yes
+
+    - name: Očitaj temperaturu procesora
+      # Pokrećemo komandu sensors i tražimo liniju sa temperaturom
+      shell: "sensors | grep -i 'Package id 0' || sensors | grep -i 'Core 0'"
+      register: temp_izlaz
+
+    - name: Prikaži temperaturu
+      debug:
+        msg: "Temperatura tvog Optiplexa je: {{ temp_izlaz.stdout }}"
