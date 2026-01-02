@@ -1,0 +1,13 @@
+---
+- name: Testiraj konekciju sa Proxmoxom
+  hosts: optiplex_proxmox
+  vars_files:
+    - tajne.yml
+  vars:
+    # Ansible koristi 'ansible_password' za SSH prijavu
+    # Mi joj dodjeljujemo vrijednost tvoje varijable iz sefa
+    ansible_password: "{{ admin_proxmox }}"
+  
+  tasks:
+    - name: Pinguj server
+      ping:
