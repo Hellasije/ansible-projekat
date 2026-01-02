@@ -1,0 +1,20 @@
+---
+- name: MOTD
+  hosts: optiplex_proxmox
+  vars_files:
+    - tajne.yml
+  vars:
+    ansible_password: "{{ admin_proxmox }}"
+
+  tasks:
+    - name: Upisi poruku u /etc/motd
+      copy:
+        dest: /etc/motd
+        content: |
+          ==============================================
+          HELLAS PROXMOX LAB
+          ==============================================
+          Server: Optiplex 3080
+          Upravlja: Ansible Automatizacija
+          Status: Aktivan
+          ==============================================

@@ -1,0 +1,5 @@
+*.retry
+.ansible_vault_pass
+.vault_pass
+__pycache__/
+*.swp
